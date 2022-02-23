@@ -30,6 +30,7 @@ function App() {
   function preload ()
   {
     this.load.image("mario-tiles", "assets/test-tileset.png");
+    this.load.spritesheet('mummy', 'assets/04_G.png', { frameWidth: 32, frameHeight: 48 });
   }
 
   function create ()
@@ -52,31 +53,56 @@ function App() {
     const map = this.make.tilemap({ data: level, tileWidth: 64, tileHeight: 64 });
     const tiles = map.addTilesetImage("mario-tiles");
     const layer = map.createLayer(0, tiles, 0, 0);
-    player = this.physics.add.sprite(400, 350, "atlas", "misa-front");
+    player = this.physics.add.sprite(500, 300, 'mummy').setScale(4);
     cursors = this.input.keyboard.createCursorKeys();
+    const walkDownAnim = this.anims.create({
+        key: 'walk-down',
+        frames: this.anims.generateFrameNumbers('mummy', { frames: [1, 2, 3, 0] }),
+        frameRate: 16
+    });
+    const walkUpAnim = this.anims.create({
+      key: 'walk-up',
+      frames: this.anims.generateFrameNumbers('mummy', { frames: [13, 14, 15, 12] }),
+      frameRate: 16
+    });
+    const walkLeftAnim = this.anims.create({
+      key: 'walk-left',
+      frames: this.anims.generateFrameNumbers('mummy', { frames: [5, 6, 7, 4] }),
+      frameRate: 16
+    });
+    const walkRightAnim = this.anims.create({
+      key: 'walk-right',
+      frames: this.anims.generateFrameNumbers('mummy', { frames: [9, 10, 11, 8] }),
+      frameRate: 16
+    });
+
+    // sprite.play({ key: 'walk', repeat: Infinity });
   }
 
   function update(time, delta) {
-    const speed = 175;
+    const speed = 3;
     // Stop any previous movement from the last frame
     player.body.setVelocity(0);
-  
-    // Horizontal movement
+    // // Horizontal movement
     if (cursors.left.isDown) {
-      player.body.setVelocityX(-100);
+      player.body.setVelocityX(-100*speed);
+      !player.anims.isPlaying && player.anims.play('walk-left', true);
     } else if (cursors.right.isDown) {
-      player.body.setVelocityX(100);
+      player.body.setVelocityX(100*speed);
+      !player.anims.isPlaying && player.anims.play('walk-right', true);
     }
   
     // Vertical movement
     if (cursors.up.isDown) {
-      player.body.setVelocityY(-100);
+      player.body.setVelocityY(-100*speed);
+      !player.anims.isPlaying && player.anims.play('walk-up', true);
     } else if (cursors.down.isDown) {
-      player.body.setVelocityY(100);
+      player.body.setVelocityY(100*speed);
+      !player.anims.isPlaying && player.anims.play('walk-down', true);
     }
   
-    // Normalize and scale the velocity so that player can't move faster along a diagonal
-    player.body.velocity.normalize().scale(speed);
+    // // Normalize and scale the velocity so that player can't move faster along a diagonal
+    // player.body.velocity.normalize().scale(speed);
   }
   return (
     <div className="App" id="game">
