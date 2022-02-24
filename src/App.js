@@ -6,8 +6,8 @@ function App() {
 
   const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1080,
+    height: 720,
     physics: {
         default: 'arcade',
         arcade: {
@@ -29,31 +29,26 @@ function App() {
 
   function preload ()
   {
-    this.load.image("mario-tiles", "assets/test-tileset.png");
+    this.load.image("mario-tiles", "assets/scene1big.png");
     this.load.spritesheet('mummy', 'assets/04_G.png', { frameWidth: 32, frameHeight: 48 });
   }
 
   function create ()
   {
     const level = [
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   1,   2,   3,   0,   0,   0,   1,   2,   3,   0 ],
-      [  0,   5,   6,   7,   0,   0,   0,   5,   6,   7,   0 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   0,   0,  14,  13,  14,   0,   0,   0,   0,   0 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
-      [  0,   0,  14,  14,  14,  14,  14,   0,   0,   0,  15 ],
-      [  0,   0,   0,   0,   0,   0,   0,   0,   0,  15,  15 ],
-      [ 35,  36,  37,   0,   0,   0,   0,   0,  15,  15,  15 ],
-      [ 39,  39,  39,  39,  39,  39,  39,  39,  39,  39,  39 ]
+      [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      [9, 10, 11, 12, 13, 14, 15, 16, 17],
+      [18, 19, 20, 21, 22, 23, 24, 25, 26],
+      [27, 28, 29, 30, 31, 32, 33, 34, 35],
+      [36, 37, 38, 39, 40, 41, 42, 43, 44],
+      [45, 46, 47, 48, 49, 50, 51, 52, 53]
     ];
   
     // When loading from an array, make sure to specify the tileWidth and tileHeight
-    const map = this.make.tilemap({ data: level, tileWidth: 64, tileHeight: 64 });
+    const map = this.make.tilemap({ data: level, tileWidth: 60, tileHeight: 60 });
     const tiles = map.addTilesetImage("mario-tiles");
     const layer = map.createLayer(0, tiles, 0, 0);
-    player = this.physics.add.sprite(500, 300, 'mummy').setScale(4);
+    player = this.physics.add.sprite(500, 300, 'mummy').setScale(1);
     cursors = this.input.keyboard.createCursorKeys();
     const walkDownAnim = this.anims.create({
         key: 'walk-down',
