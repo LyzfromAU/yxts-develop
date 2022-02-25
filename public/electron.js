@@ -17,6 +17,11 @@ function createWindow() {
 
   // and load the index.html of the app.
   // win.loadFile("index.html");
+  if(isDev) {
+    require('../app');
+  } else {
+    require(path.join(__dirname, '../app'));
+  }
   win.loadURL(
     isDev
       ? 'http://localhost:3000'

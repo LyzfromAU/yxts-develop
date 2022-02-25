@@ -1,9 +1,11 @@
 import React from 'react';
 import Phaser from 'phaser';
 import './App.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
+
+  const [testui, setTestui] = useState('shit');
    
   var npcList = [
     {
@@ -41,7 +43,7 @@ function App() {
     parent: 'game',
   };
 
-  const game = new Phaser.Game(config);
+  
 
   let player;
   let cursors;
@@ -152,9 +154,9 @@ function App() {
 
   async function testFetch(url) {
     const response = await fetch(url);
-    return response.json();
+    return response.text();
   }
-
+  
   useEffect(() => {
     const script = document.createElement('script');
   
@@ -162,17 +164,22 @@ function App() {
     script.async = true;
   
     document.body.appendChild(script);
-
-    console.log(testFetch('http://localhost:5000/test'));
+    testFetch('http://localhost:5000/test').then(data => {
+        console.log(data);
+        setTestui(data);
+        
+    });
+    const game = new Phaser.Game(config);
+    
   
-    return () => {
-      document.body.removeChild(script);
-    }
+    // return () => {
+    //   document.body.removeChild(script);
+    // }
     
   }, []);
   return (
     <div className="App" id="game">
-      <div className="testui">shit</div>
+      <div className="testui">{testui}</div>
       
     </div>
   );
