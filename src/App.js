@@ -150,6 +150,11 @@ function App() {
     return npcList.filter(npc => Math.sqrt((npc.location[0] - x)**2 + (npc.location[1] - y)**2) <= 100)[0];
   }
 
+  async function testFetch(url) {
+    const response = await fetch(url);
+    return response.json();
+  }
+
   useEffect(() => {
     const script = document.createElement('script');
   
@@ -157,10 +162,13 @@ function App() {
     script.async = true;
   
     document.body.appendChild(script);
+
+    console.log(testFetch('http://localhost:5000/test'));
   
     return () => {
       document.body.removeChild(script);
     }
+    
   }, []);
   return (
     <div className="App" id="game">
