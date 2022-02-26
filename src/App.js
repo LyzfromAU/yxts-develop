@@ -7,18 +7,29 @@ import Map1 from './Map1';
 
 function App() {
 
-  const [scene, setScene] = useState('Map1');
+  const [scene, setScene] = useState('LogIn');
 
-  const CustomTag = scene;
+  let sceneTag;
+
+  switch(scene) {
+    case 'LogIn':
+      sceneTag = <LogIn scene={scene} setscene={setScene} />
+      break;
+    case 'Map1':
+      sceneTag = <Map1 scene={scene} setscene={setScene} />
+      break;
+    default:
+      console.log('doing nothing')
+  }
    
   
   useEffect(() => { 
-    
+    console.log(sceneTag);
     
   }, []);
   return (
     <>
-    {scene === 'LogIn' ? <LogIn /> : <Map1 />}
+    {sceneTag}
     </>
   );
 }
