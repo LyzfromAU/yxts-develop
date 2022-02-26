@@ -163,9 +163,15 @@ function Map1() {
     // script.async = true;
     // document.body.appendChild(script);
     const game = new Phaser.Game(config);
-    setTestui(JSON.parse(fs.readFileSync('./test.txt', {encoding:'utf8', flag:'r'})).name);
-    // setPlayerData(data);
-    // setTestui(data);
+    fs.stat('./test.txt', function(e, stat){
+        if(e == null){
+            setTestui(JSON.parse(fs.readFileSync('./test.txt', {encoding:'utf8', flag:'r'})).name);
+        } else if(e.code == 'ENOENT') {
+            setTestui(JSON.parse(fs.readFileSync('./build/test.txt', {encoding:'utf8', flag:'r'})).name);
+        } else {
+            console.log('some other error');
+        }
+    })
   }, []);
   return (
     <div className="App" id="game">
