@@ -11,19 +11,26 @@ function LogIn(props) {
 
     const [player, setPlayer] = useState({});
     const [continueEnable, setContinueEnable] = useState(true);
+    const [name, setName] = useState('');
+    const [registerVisible, setRegisterVisible] = useState(false);
+    const [homepageVisible, setHomepageVisible] = useState(true);
+    const [progressBarVisible, setProgressBarVisible] = useState(false);
+    const [completed, setCompleted] = useState(0);
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [popup, setPopup] = useState('确认删除已经存在的角色并创建新角色吗？');
+    const [canceBtnVisible, setCanceBtnVisible] = useState(true);
+
     const nullPlayerJson = {
         name: '',
         level: 1
     }
 
-    var initialData = {};
     function newGame(){
         if (player.name !=''){
-            
-                props.setscene('NameInput');    
-            
+            setPopupVisible(true);        
         } else {
-            props.setscene('NameInput');
+            setRegisterVisible(true);
+            setHomepageVisible(false);
         }
     }
 
@@ -31,6 +38,62 @@ function LogIn(props) {
 
     function resumeGame(){
         props.setscene('Map1');
+    }
+
+    const containerStyles = {
+        height: 20,
+        width: '50%',
+        backgroundColor: "#e0e0de",
+        borderRadius: 50,
+        margin: '50px auto'
+    }
+    
+    const fillerStyles = {
+        height: '100%',
+        width: `${completed}%`,
+        backgroundColor: 'blue',
+        borderRadius: 'inherit',
+        textAlign: 'right'
+    }
+    function startGame(){
+        if(name.length > 0 && name.length < 7) {
+            fs.writeFile('./test.txt', JSON.stringify({...nullPlayerJson, name: name}), function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+            });
+            setRegisterVisible(false);
+            setProgressBarVisible(true);
+            setInterval(()=>{
+                setCompleted(completed=>completed + 20);
+            }, 600);
+            setTimeout(()=>{
+               props.setscene('Map1'); 
+            }, 3000);
+            
+        } else {
+            setPopup('请输入名字，推荐使用汉字，最多6个字符');
+            setPopupVisible(true);
+            setCanceBtnVisible(false);
+        }
+        
+    }
+
+    function handleConfirm(){
+        if(canceBtnVisible) {
+            setPopupVisible(false);
+            setRegisterVisible(true);
+            setHomepageVisible(false);
+            fs.writeFile('./test.txt', JSON.stringify(nullPlayerJson), function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+            });
+        } else {
+            setPopupVisible(false);
+        }
+    }
+
+    function handleCancel(){
+        setPopupVisible(false);
     }
 
     
@@ -44,9 +107,6 @@ function LogIn(props) {
                 console.log('some other error');
             }
         })
-        
-           
-
     },[])
 
     useEffect(()=>{
@@ -58,10 +118,31 @@ function LogIn(props) {
     return (
         <div className='login-page'>
             <div className='homepage-title'>钻石英雄坛说</div>
-            <div>
+            {homepageVisible ? <div>
                 <button onClick={newGame} className="btn-start">新游戏</button><br></br>
                 <button className="btn-start" onClick={resumeGame} disabled={continueEnable ? false : true}>继续游戏</button>
-            </div>  
+            </div> : null} 
+            {registerVisible ? <div className='register-section'>
+                <div>
+                    <label className='homepage-label'>请输入名字</label>
+                    <input type="text" value={name} onChange={(e)=>{setName(e.target.value)}} className="name-input" />
+                </div>
+                <button onClick={startGame} className="btn-start">开始游戏</button>
+            </div> : null}
+            {progressBarVisible ? <div style={containerStyles}>
+                                    <div style={fillerStyles}>
+                                        {/* <span style={labelStyles}>{`${completed}%`}</span> */}
+                                    </div>
+                                </div> : null} 
+            <div className={popupVisible ? 'popup' : 'display-none'}>
+                <div>
+                    {popup}
+                </div>
+                <div className='flex-row'>
+                    <button onClick={handleConfirm} className='btn-confirm'>确认</button>
+                    <button className={canceBtnVisible ? 'btn-confirm' : 'display-none'} onClick={handleCancel}>取消</button>
+                </div>
+            </div>
         </div>
     )
 }

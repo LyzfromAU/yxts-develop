@@ -36,3 +36,26 @@ button:disabled {
 .display-none {
     display: none;
 }
+.popup {
+    position: absolute;
+    top: 36%;
+    left: 29%;
+    padding: 80px;
+    background-color: chocolate;
+    border-radius: 5px;
+}
+.flex-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.btn-confirm {
+    width: 60px;
+    background-color: lightskyblue;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 8px 0;
+    margin: 20px auto;
+    cursor: pointer;
+}
