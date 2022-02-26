@@ -1,0 +1,35 @@
+.login-page {
+    text-align: center;
+    padding-top: 180px;
+    
+}
+.btn-start {
+    width: 160px;
+    background-color: lightskyblue;
+    border-radius: 5px;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 12px 0;
+    margin: 20px auto;
+    cursor: pointer;
+}
+.homepage-title {
+    color: blue;
+    font-size: 48px;
+    font-weight: 900;
+}
+.homepage-label {
+    font-size: 24px;
+    font-weight: 500;
+    margin-right: 12px;
+}
+.register-section {
+    margin-top: 45px;
+}
+.name-input {
+    height: 30px;
+    margin-bottom: 30px;
+}
+button:disabled {
+    cursor: not-allowed;
+}

@@ -8,6 +8,8 @@ const path = window.require('path');
 
 function Map1() {
 
+  const [playerData, setPlayerData] = useState({});
+
   const [testui, setTestui] = useState('shit');
    
   var npcList = [
@@ -157,31 +159,13 @@ function Map1() {
   
   useEffect(() => {
     // const script = document.createElement('script');
-  
     // script.src = "../script.js";
     // script.async = true;
-  
     // document.body.appendChild(script);
-    
     const game = new Phaser.Game(config);
-    let testJson = {
-      name: 'cnm',
-      level: 23
-    }
-    let pathname = path.join(__dirname, 'test.txt');
-    console.log(pathname);
-    fs.writeFile('./test.txt', JSON.stringify(testJson), function (err) {
-      if (err) throw err;
-      console.log('Saved!');
-    });
-    
-    
-    
-  
-    // return () => {
-    //   document.body.removeChild(script);
-    // }
-    
+    setTestui(JSON.parse(fs.readFileSync('./test.txt', {encoding:'utf8', flag:'r'})).name);
+    // setPlayerData(data);
+    // setTestui(data);
   }, []);
   return (
     <div className="App" id="game">
