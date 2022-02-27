@@ -2,34 +2,18 @@ import React from 'react';
 import Phaser from 'phaser';
 import './App.css';
 import { useEffect, useState } from 'react';
+import allNpc from './data/npc';
 const fs = window.require('fs');
-const path = window.require('path');
 
 
 function Map1() {
 
-  const [playerData, setPlayerData] = useState({});
-
+  const [currentNpc, setCurrentNpc] = useState({name: 'fake', location: [30, 210]});
   const [testui, setTestui] = useState('shit');
+  const [menu, setMenu] = useState(false);
+  const [gameMain, setGameMain] = useState({});
    
-  var npcList = [
-    {
-      name: '段誉',
-      image: 'assets/12.png',
-      location: [150, 150]
-    },
-    {
-      name: '穆念慈',
-      image: 'assets/28.png',
-      location: [330, 570]
-    },
-    {
-      name: '武三通',
-      image: 'assets/29.png',
-      location: [810, 390]
-    }
-    
-  ];
+  var npcList = allNpc.filter(npc => npc.map === 1);
   const config = {
     type: Phaser.AUTO,
     width: 1080,
@@ -47,11 +31,12 @@ function Map1() {
     },
     parent: 'game',
   };
-
+  
   
 
   let player;
   let cursors;
+  var self;
 
   function preload ()
   {
@@ -100,12 +85,17 @@ function Map1() {
     };
     this.physics.add.collider(player, layer);
     layer.setCollisionBetween(1, 1);
+    self = this;
+    setGameMain(self);
     const enterKey = this.input.keyboard.addKey('Enter');
     enterKey.on('down', function() {
       if (findNearestNpc(player.x, player.y) != null){
-        alert(findNearestNpc(player.x, player.y).name);
+        setCurrentNpc(findNearestNpc(player.x, player.y));
+        setMenu(true);
+        self.scene.pause();
       }
     })
+    
     const walkDownAnim = this.anims.create({
         key: 'walk-down',
         frames: this.anims.generateFrameNumbers('mummy', { frames: [1, 2, 3, 0] }),
@@ -127,14 +117,12 @@ function Map1() {
       frameRate: 16
     });
 
-    // sprite.play({ key: 'walk', repeat: Infinity });
   }
 
   function update(time, delta) {
     const speed = 3;
     // Stop any previous movement from the last frame
     player.body.setVelocity(0);
-    // // Horizontal movement
     if (cursors.left.isDown) {
       player.body.setVelocityX(-100*speed);
       !player.anims.isPlaying && player.anims.play('walk-left', true);
@@ -156,13 +144,18 @@ function Map1() {
   function findNearestNpc(x, y){
     return npcList.filter(npc => Math.sqrt((npc.location[0] - x)**2 + (npc.location[1] - y)**2) <= 100)[0];
   }
-  
+  const menuStyles = {
+        top: `${currentNpc.location[1]}px`,
+        left: `${currentNpc.location[0]}px`
+  }
+
   useEffect(() => {
     // const script = document.createElement('script');
     // script.src = "../script.js";
     // script.async = true;
     // document.body.appendChild(script);
     const game = new Phaser.Game(config);
+    
     fs.stat('./test.txt', function(e, stat){
         if(e == null){
             setTestui(JSON.parse(fs.readFileSync('./test.txt', {encoding:'utf8', flag:'r'})).name);
@@ -172,10 +165,23 @@ function Map1() {
             console.log('some other error');
         }
     })
+    
   }, []);
+
+  function handleMenuBtnClick(){
+      gameMain.scene.resume();
+  }
+
+  
+
   return (
     <div className="App" id="game">
       <div className="testui" id="trash">{testui}</div>
+      {menu ? <div className='menu' style={menuStyles}>
+          {currentNpc != null ? currentNpc.options.map((option)=>{
+            return (<button key={option.key} className="menu-btn" onClick={handleMenuBtnClick}>{option.text}</button>)
+          }) : null}
+      </div> : null}
       
     </div>
   );
