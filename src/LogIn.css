@@ -13,6 +13,14 @@
     margin: 20px auto;
     cursor: pointer;
 }
+.btn-start:hover {
+    color: white;
+    background-color: blueviolet;
+}
+.btn-confirm:hover {
+    color: white;
+    background-color: blueviolet;
+}
 .homepage-title {
     color: blue;
     font-size: 48px;

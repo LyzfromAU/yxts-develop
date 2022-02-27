@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import './App.css';
 import { useEffect, useState } from 'react';
 import allNpc from './data/npc';
+import allQuests from './data/quest';
 const fs = window.require('fs');
 
 
@@ -12,6 +13,17 @@ function Map1() {
   const [testui, setTestui] = useState('shit');
   const [menu, setMenu] = useState(false);
   const [gameMain, setGameMain] = useState({});
+  const [chat, setChat] = useState(false);
+  const [desc, setDesc] = useState(false);
+  const [fixedX, setFixedX] = useState(30);
+  const [fixedY, setFixedY] = useState(210);
+  const [questAsk, setQuestAsk] = useState('');
+  const [questAns, setQuestAns] = useState('');
+  const [questProgress, setQuestProgress] = useState('');
+  const [quest, setQuest] = useState(false);
+  const [completed, setCompleted] = useState(0);
+  const [checkout, setCheckout] = useState(false);
+  const [reward, setReward] = useState([]);
    
   var npcList = allNpc.filter(npc => npc.map === 1);
   const config = {
@@ -145,8 +157,8 @@ function Map1() {
     return npcList.filter(npc => Math.sqrt((npc.location[0] - x)**2 + (npc.location[1] - y)**2) <= 100)[0];
   }
   const menuStyles = {
-        top: `${currentNpc.location[1]}px`,
-        left: `${currentNpc.location[0]}px`
+        top: `${fixedY}px`,
+        left: `${fixedX}px`
   }
 
   useEffect(() => {
@@ -168,8 +180,94 @@ function Map1() {
     
   }, []);
 
-  function handleMenuBtnClick(){
-      gameMain.scene.resume();
+  useEffect(()=>{
+    if(currentNpc.location[1] > 420) {
+      setFixedY(currentNpc.location[1] - 260);
+    } else {
+      setFixedY(currentNpc.location[1]);
+    }
+    if(currentNpc.location[0] > 900) {
+      setFixedX(currentNpc.location[0] - 140);
+    } else {
+      setFixedX(currentNpc.location[0]);
+    }
+  },[currentNpc])
+
+  function handleMenuBtnClick(e){
+      if(e.target.id === 'chat') {
+        setMenu(false);
+        setChat(true);  
+      } else if (e.target.id === 'description') {
+        setMenu(false);
+        setDesc(true);
+      } else if (e.target.id === 'fight') {
+        setMenu(false);
+        gameMain.scene.resume();
+      } else if (e.target.id === 'quest') {
+        var rand = Math.floor(Math.random() * currentNpc.options.filter(option=>option.key === 'quest')[0].quest.length);
+        setQuestAsk(currentNpc.options.filter(option=>option.key === 'quest')[0].quest[rand].ask);
+        setQuestAns(currentNpc.options.filter(option=>option.key === 'quest')[0].quest[rand].ans);
+        var rand1 = Math.random() + 0.5;
+        var rand2 = Math.random() + 0.5;
+        var rand3 = Math.random() + 0.5;
+        var questIdentifier = allQuests[currentNpc.options.filter(option=>option.key === 'quest')[0].questId - 1];
+        setReward([rand1 * questIdentifier.pt, rand2 * questIdentifier.money, rand3 * questIdentifier.money]);
+        setQuestProgress('ask');
+        setQuest(true);
+        setMenu(false);
+      }
+  }
+
+  function handleChatClick(){
+    setChat(false);
+    gameMain.scene.resume();
+  }
+  function handleDescClick(){
+    setDesc(false);
+    gameMain.scene.resume();
+  }
+  const containerStyles = {
+      height: 20,
+      width: '50%',
+      backgroundColor: "#e0e0de",
+      borderRadius: 50,
+      margin: '50px auto'
+  }
+
+  const fillerStyles = {
+      height: '100%',
+      width: `${completed}%`,
+      backgroundColor: 'blue',
+      borderRadius: 'inherit',
+      textAlign: 'right'
+  }
+  var questInterval;
+  function handleYes(){
+    setQuestProgress('ing');
+    questInterval = setInterval(()=>{
+      setCompleted(completed=>completed + 20);
+    }, 800);
+  }
+
+  useEffect(()=>{
+    if(completed === 100){
+      clearInterval(questInterval);
+      setQuestProgress('ans');
+      setCompleted(0);
+    }
+  }, [completed]);
+
+  function handleNo(){
+    setQuest(false);
+    setQuestProgress('');
+    gameMain.scene.resume();
+  }
+
+  function handleQuestClick(){
+    if(questProgress === 'ans') {
+      setQuest(false);
+      setCheckout(true);
+    }
   }
 
   
@@ -178,11 +276,35 @@ function Map1() {
     <div className="App" id="game">
       <div className="testui" id="trash">{testui}</div>
       {menu ? <div className='menu' style={menuStyles}>
-          {currentNpc != null ? currentNpc.options.map((option)=>{
-            return (<button key={option.key} className="menu-btn" onClick={handleMenuBtnClick}>{option.text}</button>)
+          {currentNpc.options != null ? currentNpc.options.map((option)=>{
+            return (<button key={option.key} id={option.key} className="menu-btn" onClick={(e)=>handleMenuBtnClick(e)}>{option.text}</button>)
           }) : null}
       </div> : null}
-      
+      {chat ? <div className='chat' onClick={handleChatClick}>
+        {currentNpc.options != null ? currentNpc.options.filter(option=>option.key === 'chat')[0].content : null}
+      </div> : null}
+      {desc ? <div className='chat' onClick={handleDescClick}>
+        {currentNpc.options != null ? currentNpc.options.filter(option=>option.key === 'description')[0].content : null}
+      </div> : null}
+      {quest ? <div className='chat' onClick={handleQuestClick}>
+        {questProgress === 'ask' ? questAsk : null}
+        {questProgress === 'ans' ? questAns : null}
+        {questProgress === 'ing' ? <div><div style={containerStyles}>
+                                    <div style={fillerStyles}>
+                                        
+                                    </div>
+                                </div><div>干活中....</div></div> : null}
+      </div> : null}
+      {questProgress === 'ask' ? <div className='yes-or-no'>
+        <button className='menu-btn' onClick={handleYes}>是</button>
+        <button className='menu-btn' onClick={handleNo}>否</button>
+      </div> : null}
+      <div className='checkout'>
+        <div>任务获得</div>
+        <div>{`潜能： ${reward[0]}点`}</div>
+        <div>{`金币： ${reward[1]}`}</div>
+        <div>{`实战经验： ${reward[2]}点`}</div>
+      </div>
     </div>
   );
 }

@@ -23,4 +23,30 @@
   font-size: 24px;
   border-radius: 5px;
   margin-bottom: 8px;
+  cursor: pointer;
+}
+.menu-btn:hover {
+  color: white;
+  background-color: blueviolet;
+}
+.chat {
+  position: absolute;
+  bottom: 4px;
+  left: 36%;
+  width: 300px;
+  height: 120px;
+  text-align: center;
+  font-size: larger;
+  font-weight: 700;
+  background-color: aqua;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+}
+.yes-or-no {
+  position: absolute;
+  top: 470px;
+  left: 650px;
+  display: flex;
+  flex-direction: column;
 }
