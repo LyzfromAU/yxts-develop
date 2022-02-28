@@ -24,6 +24,38 @@ function LogIn(props) {
         name: '',
         level: 1
     }
+    const initSkillsetJson = {
+        ultimate: [
+            
+        ],
+        fist: [
+            {
+                name: '基本拳脚',
+                level: 1
+            }
+        ],
+        sword: [
+            {
+                name: "基本剑法",
+                level: 1
+            }
+        ],
+        dark: [
+
+        ],
+        evade: [
+            {
+                name: "基本轻功",
+                level: 1
+            }
+        ],
+        defend: [
+            {
+                name: "基本招架",
+                level: 1
+            }
+        ]
+    }
 
     function newGame(){
         if (player.name !=''){
@@ -55,20 +87,20 @@ function LogIn(props) {
         borderRadius: 'inherit',
         textAlign: 'right'
     }
+    let loadingInterval;
     function startGame(){
         if(name.length > 0 && name.length < 7) {
             fs.writeFile('./test.txt', JSON.stringify({...nullPlayerJson, name: name}), function (err) {
                 if (err) throw err;
-                console.log('Saved!');
+            });
+            fs.writeFile('./skillset.txt', JSON.stringify(initSkillsetJson), function (err) {
+                if (err) throw err;
             });
             setRegisterVisible(false);
             setProgressBarVisible(true);
-            setInterval(()=>{
+            loadingInterval = setInterval(()=>{
                 setCompleted(completed=>completed + 20);
             }, 600);
-            setTimeout(()=>{
-               props.setscene('Map1'); 
-            }, 3000);
             
         } else {
             setPopup('请输入名字，推荐使用汉字，最多6个字符');
@@ -114,7 +146,12 @@ function LogIn(props) {
             setContinueEnable(false);
         }
     }, [player])
-    
+    useEffect(()=>{
+        if(completed === 100){
+            clearInterval(loadingInterval);
+            props.setscene('Map1');
+        }
+    }, [completed])
     return (
         <div className='login-page'>
             <div className='homepage-title'>钻石英雄坛说</div>
