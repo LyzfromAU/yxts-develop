@@ -1,0 +1,63 @@
+.player-portrait {
+    background: url('../public/assets/04_G.png') 0 0;
+    width: 160px;
+    height: 240px;
+    position: absolute;
+    top: 150px;
+    left: 200px;
+    background-size: 640px 960px;
+}
+.enemy-portrait {
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    top: 190px;
+    right: 200px;
+}
+.battle {
+    background-image: url('../public/assets/fightbg1.webp');
+    width: 1080px;
+    height: 720px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.battle-text {
+    position: absolute;
+    bottom: 10px;
+    left: 200px;
+    width: 640px;
+    height: 155px;
+    text-align: center;
+    font-size: larger;
+    font-weight: 700;
+    background-color: aqua;
+    border-radius: 10px;
+    padding: 20px;
+}
+.playerHp{
+    position: absolute;
+    left: 200px;
+    top: 350px;
+    border: 1px solid gray;
+}
+.enemyHp{
+    position: absolute;
+    right: 200px;
+    top: 350px;
+    border: 1px solid gray;
+}
+.playerFiller {
+    border-radius: 25px 0 0 25px;
+}
+.playerMp{
+    position: absolute;
+    left: 200px;
+    top: 380px;
+    border: 1px solid gray;
+}
+.enemyMp{
+    position: absolute;
+    right: 200px;
+    top: 380px;
+    border: 1px solid gray;
+}
