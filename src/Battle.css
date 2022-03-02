@@ -39,12 +39,14 @@
     left: 200px;
     top: 350px;
     border: 1px solid gray;
+    overflow: hidden;
 }
 .enemyHp{
     position: absolute;
     right: 200px;
     top: 350px;
     border: 1px solid gray;
+    overflow: hidden;
 }
 .playerFiller {
     border-radius: 25px 0 0 25px;
@@ -54,26 +56,60 @@
     left: 200px;
     top: 380px;
     border: 1px solid gray;
+    overflow: hidden;
 }
 .enemyMp{
     position: absolute;
     right: 200px;
     top: 380px;
     border: 1px solid gray;
+    overflow: hidden;
 }
 .fight-option-section {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    top: 470px;
+    top: 464px;
     left: 220px;
     width: 640px;
 }
 .btn-fight-option {
-    height: 60px;
+    height: 50px;
     width: 120px;
     cursor: pointer;
     font-size: 24px;
+    font-weight: 700;
+}
+.enemy-dmg-display {
+    color: white;
+    position: absolute;
+    top: 120px;
+    right: 240px;
+    font-size: 46px;
+    font-weight: 700;
+}
+.enemy-dmg-display-crit {
+    color: yellow;
+    position: absolute;
+    top: 120px;
+    right: 240px;
+    font-size: 46px;
+    font-weight: 700;
+}
+.player-dmg-display {
+    color: red;
+    position: absolute;
+    top: 100px;
+    left: 240px;
+    font-size: 46px;
+    font-weight: 700;
+}
+.player-dmg-display-crit {
+    color: darkred;
+    position: absolute;
+    top: 100px;
+    left: 240px;
+    font-size: 46px;
     font-weight: 700;
 }

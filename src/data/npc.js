@@ -21,7 +21,8 @@ const allNpc = [
             }
         ],
         id: 1,
-        ap: 100,
+        ap: 300,
+        maxHp: 5000,
         crit: 17,
         critDmg: 200,
         defence: 0,
@@ -39,8 +40,8 @@ const allNpc = [
         emergencySkill: [
             {
                 type: 'real',
-                percentage: 20,
-                skillId: 1
+                percentage: 40,
+                id: 1
             }
         ]
 

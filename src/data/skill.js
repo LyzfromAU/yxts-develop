@@ -17,6 +17,14 @@ const allSkills = [
         baseDmgRate: 1.05,
         baseDmgConst: 50,
         growth: 0.003
+    },
+    {
+        id: 3,
+        type: 'light',
+        require: null,
+        name: '梯云纵',
+        baseEvadeRate: 9,
+        growth: 0.003
     }
 ]
 export default allSkills
