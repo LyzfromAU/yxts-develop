@@ -103,6 +103,7 @@ function Map1() {
     enterKey.on('down', function() {
       if (findNearestNpc(player.x, player.y) != null){
         setCurrentNpc(findNearestNpc(player.x, player.y));
+        localStorage.setItem('currentNpc', findNearestNpc(player.x, player.y).id)
         setMenu(true);
         self.scene.pause();
       }

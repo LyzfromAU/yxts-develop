@@ -25,34 +25,14 @@ function LogIn(props) {
         level: 1
     }
     const initSkillsetJson = {
-        ultimate: [
-            
-        ],
-        fist: [
+        skills: [
             {
-                name: '基本拳脚',
-                level: 1
-            }
-        ],
-        sword: [
+                id: 1,
+                level: 65
+            },
             {
-                name: "基本剑法",
-                level: 1
-            }
-        ],
-        dark: [
-
-        ],
-        evade: [
-            {
-                name: "基本轻功",
-                level: 1
-            }
-        ],
-        defend: [
-            {
-                name: "基本招架",
-                level: 1
+                id: 2,
+                level: 90
             }
         ]
     }
