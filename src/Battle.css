@@ -61,3 +61,19 @@
     top: 380px;
     border: 1px solid gray;
 }
+.fight-option-section {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    top: 470px;
+    left: 220px;
+    width: 640px;
+}
+.btn-fight-option {
+    height: 60px;
+    width: 120px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 700;
+}

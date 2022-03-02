@@ -19,7 +19,31 @@ const allNpc = [
                 key: 'fight',
                 text: '战斗'
             }
+        ],
+        id: 1,
+        ap: 100,
+        crit: 17,
+        critDmg: 200,
+        defence: 0,
+        evade: 33,
+        attackText: '挥拳向你打去',
+        evadeText: '使用凌波微步躲了开去',
+        level: 25,
+        turnSkill: [
+            {   
+                type: 'rate',
+                turn: 3,
+                rate: 1.3
+            }, 
+        ],
+        emergencySkill: [
+            {
+                type: 'real',
+                percentage: 20,
+                skillId: 1
+            }
         ]
+
     },
     {
         name: '穆念慈',
@@ -60,7 +84,8 @@ const allNpc = [
                 ],
                 questId: 1
             }
-        ]
+        ],
+        id: 2
     },
     {
         name: '武三通',
@@ -100,7 +125,8 @@ const allNpc = [
                     }
                 ]
             }
-        ]
+        ],
+        id: 3
     }
 ];
 
