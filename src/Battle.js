@@ -87,7 +87,7 @@ function Battle() {
       <div className='player-portrait'></div>
       <img src={enemyPortrait} alt="enemy" className='enemy-portrait' />
       <div className='battle-text'>
-
+          {text}
       </div>
       <div style={playerHpBarStyles} className='playerHp'>
           <div style={playerHpBarFillerStyles} className='playerFiller'>  
