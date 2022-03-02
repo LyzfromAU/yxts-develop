@@ -24,6 +24,7 @@ function Battle() {
   const [isCritEnemy, setIsCritEnemy] = useState(false);
   const [isEvadedEnemy, setIsEvadedEnemy] = useState(false);
   const [optionVisible, setOptionVisible] = useState(true);
+  const [enemyTurn, setEnemyTurn] = useState(false);
   const player = {
       maxHp: localStorage.getItem('maxHp'),
       maxMp: localStorage.getItem('maxMp'),
@@ -68,10 +69,17 @@ function Battle() {
         setIsEvaded(false);
     }, 800);
     setTimeout(()=>{
-        enemyAttack();
-    }, 2000);
-
+        setEnemyTurn(true);
+    }, 2000)
+    
+    
   }
+
+  useEffect(()=>{
+      if(enemyTurn === true) {
+          enemyAttack();
+      }
+  }, [enemyTurn]);
   const playerBreath = () => {
 
   }
@@ -84,8 +92,9 @@ function Battle() {
   const playerFlee = () => {
 
   }
-
+  
   const enemyAttack = () => {
+    console.log(enemyHp);
     if (enemyHp/enemy.maxHp < enemy.emergencySkill[0].percentage/100) {
         var enemyEmergency = allSkills.find(x => x.id == enemy.emergencySkill[0].id);
         var rand = Math.random()*0.4 + 0.8;
@@ -138,6 +147,7 @@ function Battle() {
     setTimeout(()=>{
         setText('');
         setOptionVisible(true);
+        setEnemyTurn(false);
     }, 2000);
   }
   const playerHpBarStyles = {
