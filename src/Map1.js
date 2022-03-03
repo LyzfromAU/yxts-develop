@@ -7,7 +7,7 @@ import allQuests from './data/quest';
 const fs = window.require('fs');
 
 
-function Map1() {
+function Map1(props) {
 
   const [currentNpc, setCurrentNpc] = useState({name: 'fake', location: [30, 210]});
   const [testui, setTestui] = useState('shit');
@@ -57,6 +57,7 @@ function Map1() {
       this.load.image(npcList[i].name, npcList[i].image);
     };
     this.load.spritesheet('mummy', 'assets/04_G.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.image('exit', 'assets/104.png');
   }
 
   function create ()
@@ -108,6 +109,29 @@ function Map1() {
         self.scene.pause();
       }
     })
+    player.setCollideWorldBounds(true);
+
+    //set up areas for map switch
+    let healthGroup = this.physics.add.staticGroup({
+        key: 'exit',
+        // frameQuantity: 10,
+        immovable: true
+    });
+    
+    var children = healthGroup.getChildren();
+
+    children[0].setPosition(180, 685);
+    children[0].setSize(120, 60);
+    children[0].setOrigin(0, 0);
+    children[0].visible = false;
+    
+
+    healthGroup.refresh();
+
+    this.physics.add.overlap(player, healthGroup, spriteHitHealth);
+
+
+    
     
     const walkDownAnim = this.anims.create({
         key: 'walk-down',
@@ -139,6 +163,7 @@ function Map1() {
     if (cursors.left.isDown) {
       player.body.setVelocityX(-100*speed);
       !player.anims.isPlaying && player.anims.play('walk-left', true);
+      // console.log(player.x);
     } else if (cursors.right.isDown) {
       player.body.setVelocityX(100*speed);
       !player.anims.isPlaying && player.anims.play('walk-right', true);
@@ -156,6 +181,10 @@ function Map1() {
 
   function findNearestNpc(x, y){
     return npcList.filter(npc => Math.sqrt((npc.location[0] - x)**2 + (npc.location[1] - y)**2) <= 100)[0];
+  }
+
+  function spriteHitHealth(){
+    props.setscene('Battle');
   }
   const menuStyles = {
         top: `${fixedY}px`,
@@ -270,7 +299,7 @@ function Map1() {
       setCheckout(true);
     }
   }
-
+  
   
 
   return (
@@ -300,12 +329,12 @@ function Map1() {
         <button className='menu-btn' onClick={handleYes}>是</button>
         <button className='menu-btn' onClick={handleNo}>否</button>
       </div> : null}
-      <div className='checkout'>
+      {/* <div className='checkout'>
         <div>任务获得</div>
         <div>{`潜能： ${reward[0]}点`}</div>
         <div>{`金币： ${reward[1]}`}</div>
         <div>{`实战经验： ${reward[2]}点`}</div>
-      </div>
+      </div> */}
     </div>
   );
 }

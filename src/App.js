@@ -8,7 +8,7 @@ import Battle from './Battle';
 
 function App() {
 
-  const [scene, setScene] = useState('Battle');
+  const [scene, setScene] = useState('LogIn');
 
   let sceneTag;
 
