@@ -7,7 +7,7 @@ import allQuests from './data/quest';
 const fs = window.require('fs');
 
 
-function Map1(props) {
+function Map2(props) {
 
   const [currentNpc, setCurrentNpc] = useState({name: 'fake', location: [30, 210]});
   const [testui, setTestui] = useState('shit');
@@ -25,7 +25,7 @@ function Map1(props) {
   const [checkout, setCheckout] = useState(false);
   const [reward, setReward] = useState([]);
    
-  var npcList = allNpc.filter(npc => npc.map === 1);
+  var npcList = allNpc.filter(npc => npc.map === 2);
   const config = {
     type: Phaser.AUTO,
     width: 1080,
@@ -41,13 +41,13 @@ function Map1(props) {
         create: create,
         update: update
     },
-    parent: 'game',
+    parent: 'game2',
   };
   
   
 
-  var player;
-  var cursors;
+  let player;
+  let cursors;
   var self;
 
   function preload ()
@@ -63,13 +63,13 @@ function Map1(props) {
   function create ()
   {
     const level = [
-      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
-      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 1, 1, 1, 1, 1],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
@@ -82,7 +82,9 @@ function Map1(props) {
     const tiles = map.addTilesetImage("mario-tiles");
     const layer = map.createLayer(0, tiles, 0, 0);
     player = this.physics.add.sprite(parseInt(localStorage.getItem('sceneSwitchX')), parseInt(localStorage.getItem('sceneSwitchY')), 'mummy').setScale(1);
+    
     cursors = this.input.keyboard.createCursorKeys();
+    console.log(cursors);
     for (var i = 0; i < npcList.length; i++) {
       this.add.image(npcList[i].location[0], npcList[i].location[1], npcList[i].name).setScale(0.5);
       this.make.text({
@@ -110,6 +112,7 @@ function Map1(props) {
       }
     })
     player.setCollideWorldBounds(true);
+    
 
     //set up areas for map switch
     let healthGroup = this.physics.add.staticGroup({
@@ -120,7 +123,7 @@ function Map1(props) {
     
     var children = healthGroup.getChildren();
 
-    children[0].setPosition(180, 685);
+    children[0].setPosition(180, 0);
     children[0].setSize(120, 60);
     children[0].setOrigin(0, 0);
     children[0].visible = false;
@@ -161,9 +164,10 @@ function Map1(props) {
     // Stop any previous movement from the last frame
     player.body.setVelocity(0);
     if (cursors.left.isDown) {
+      
       player.body.setVelocityX(-100*speed);
       !player.anims.isPlaying && player.anims.play('walk-left', true);
-      // console.log(player.x);
+      
     } else if (cursors.right.isDown) {
       player.body.setVelocityX(100*speed);
       !player.anims.isPlaying && player.anims.play('walk-right', true);
@@ -182,20 +186,21 @@ function Map1(props) {
   function findNearestNpc(x, y){
     return npcList.filter(npc => Math.sqrt((npc.location[0] - x)**2 + (npc.location[1] - y)**2) <= 100)[0];
   }
-
+  var game;
   function spriteHitHealth(){
-    if (player.y > 650){
+    if (player.y < 70){
       localStorage.setItem('sceneSwitchX', player.x);
-      localStorage.setItem('sceneSwitchY', 720 - player.y + 30);
+      localStorage.setItem('sceneSwitchY', 720 - player.y -30);
       game.destroy();
-      props.setscene('Map2');
-    } 
+      props.setscene('Map1'); 
+    }
+    
   }
   const menuStyles = {
         top: `${fixedY}px`,
         left: `${fixedX}px`
   }
-  var game;
+
   useEffect(() => {
     // const script = document.createElement('script');
     // script.src = "../script.js";
@@ -212,6 +217,7 @@ function Map1(props) {
             console.log('some other error');
         }
     })
+    
     
   }, []);
 
@@ -308,7 +314,7 @@ function Map1(props) {
   
 
   return (
-    <div className="App" id="game">
+    <div className="App" id="game2">
       <div className="testui" id="trash">{testui}</div>
       {menu ? <div className='menu' style={menuStyles}>
           {currentNpc.options != null ? currentNpc.options.map((option)=>{
@@ -344,4 +350,4 @@ function Map1(props) {
   );
 }
 
-export default Map1;
+export default Map2;

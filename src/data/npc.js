@@ -128,7 +128,77 @@ const allNpc = [
             }
         ],
         id: 3
-    }
+    },
+    {
+        name: '郭靖',
+        image: 'assets/41.png',
+        location: [330, 270],
+        map: 2,
+        options: [
+            {
+                key: 'chat',
+                text: '交谈',
+                content: '有我郭靖在一天，襄阳就一天不会被攻破'
+            },
+            {
+                key: 'description',
+                text: '查看',
+                content: '郭靖四十多岁，武功看起来神功盖世，出手似乎不轻'
+            },
+            {
+                key: 'fight',
+                text: '战斗'
+            }   
+        ],
+        id: 4
+    },
+    {
+        name: '黄蓉',
+        image: 'assets/14.png',
+        location: [630, 270],
+        map: 2,
+        options: [
+            {
+                key: 'chat',
+                text: '交谈',
+                content: '靖哥哥'
+            },
+            {
+                key: 'description',
+                text: '查看',
+                content: '黄蓉四十多岁，武功看起来略有大成，出手似乎不轻'
+            },
+            {
+                key: 'fight',
+                text: '战斗'
+            }   
+        ],
+        id: 5
+    },
+    {
+        name: '郭芙',
+        image: 'assets/26.png',
+        location: [810, 570],
+        map: 2,
+        options: [
+            {
+                key: 'chat',
+                text: '交谈',
+                content: '我爹是郭靖大侠，我娘是黄蓉女侠，我外公是桃花岛岛主，你敢碰我一下要你好看'
+            },
+            {
+                key: 'description',
+                text: '查看',
+                content: '郭芙十七八岁，武功看起来不足挂齿，出手似乎很轻'
+            },
+            {
+                key: 'fight',
+                text: '战斗'
+            }   
+        ],
+        id: 6
+    },
+    
 ];
 
 export default allNpc
